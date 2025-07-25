@@ -14,23 +14,24 @@ jobs:
       # 1. Check out your repository code
       - uses: actions/checkout@v4
 
-      # 2. Install uv (fast Python dependency manager)
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
+      # 2. Set up Python
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
 
-      # 3. Set up Python environment
-      - name: Set up Python
-        run: uv python install
+      # 3. Install Marimo
+      - name: Install marimo
+        run: pip install marimo
 
-      # 4. Install dependencies from your lockfile
-      - name: Install dependencies
-        run: uv sync --locked
+      # 4. Intall requirements
+      - name: Install requirements
+        run: pip install -r tyre_degradation/requirements.txt
 
       # 5. Export your Marimo dashboard to static HTML (WASM-powered)
       - name: Export Marimo notebooks
         run: |
           mkdir -p output_dir
-          uv run marimo export html-wasm tyre_degradataion/analysis.py -o output_dir/tyre_degradation.html --mode run
+          marimo export html-wasm tyre_degradation/analysis.py -o output_dir/tyre_degradation.html --mode run
 
       # 6. Add .nojekyll to prevent GitHub Pages from ignoring files/folders starting with "_"
       - name: Add .nojekyll

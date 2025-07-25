@@ -50,7 +50,10 @@ def _(gp_radio, mo, year_dropdown):
 
 @app.cell
 def _(fastf1, gp_radio, plotting, year_dropdown):
+    import os
+
     plotting.setup_mpl()
+    os.makedirs('./working/cache', exist_ok=True)
     fastf1.Cache.enable_cache('./working/cache')
 
     session = fastf1.get_session(year_dropdown.value, gp_radio.value, 'R')  # R=Race
